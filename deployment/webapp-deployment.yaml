@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-orchestrator-deployment
+  namespace: api-orchestrator 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-orchestrator
+  template:
+    metadata:
+      labels:
+        app: api-orchestrator
+    spec:
+      containers:
+      - name: api-orchestrator-container
+        image: api-orchestrator:v1
+        envFrom:
+        - secretRef:
+            name: api-orchestrator-secrets
+        - configMapRef:
+            name: api-orchestrator-config        
+        ports:
+        - containerPort: 8000
